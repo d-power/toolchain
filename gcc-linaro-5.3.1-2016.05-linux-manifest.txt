@@ -1,0 +1,165 @@
+manifest_format=1.1
+
+# Note that for ABE, these parameters are not used
+# Component data for gmp
+gmp_url=http://snapshots.linaro.org/components/toolchain/infrastructure/
+gmp_filespec=gmp-6.0.0a.tar.xz
+gmp_configure="--enable-cxx --enable-fft"
+gmp_staticlink="yes"
+
+# Component data for mpfr
+mpfr_url=http://snapshots.linaro.org/components/toolchain/infrastructure/
+mpfr_filespec=mpfr-3.1.3.tar.xz
+mpfr_configure="--with-gmp=${local_builds}/destdir/x86_64-unknown-linux-gnu"
+mpfr_staticlink="yes"
+
+# Component data for mpc
+mpc_url=http://snapshots.linaro.org/components/toolchain/infrastructure/
+mpc_filespec=mpc-1.0.3.tar.gz
+mpc_configure="--with-gmp=${local_builds}/destdir/x86_64-unknown-linux-gnu --with-mpfr=${local_builds}/destdir/x86_64-unknown-linux-gnu"
+mpc_staticlink="yes"
+
+# Component data for linux
+linux_url=http://snapshots.linaro.org/components/toolchain/infrastructure/
+linux_filespec=linux-linaro-4.0-rc4-2015.03.tar.xz
+linux_makeflags="headers_install ARCH=arm INSTALL_HDR_PATH=${sysroots}/usr"
+linux_staticlink="yes"
+
+# Component data for dejagnu
+dejagnu_url=http://git.linaro.org/git/toolchain
+dejagnu_branch=linaro-local/stable
+dejagnu_revision=9c19d3d7473ef731b74f3a48fcce5a168bf701ec
+dejagnu_filespec=dejagnu.git
+dejagnu_staticlink="yes"
+
+# Component data for binutils
+binutils_url=http://git.linaro.org/git/toolchain
+binutils_branch=linaro_binutils-2_25-branch
+binutils_revision=79ec80f7e6a8b9a1b66aa5f79f5c1bb3fb3807cf
+binutils_filespec=binutils-gdb.git
+binutils_configure="--enable-lto --enable-plugins --disable-werror CPPFLAGS=-UFORTIFY_SOURCE --with-pkgversion=Linaro_Binutils-2016.05 --disable-gdb --disable-sim --disable-libdecnumber --disable-readline --with-sysroot=${sysroots}"
+binutils_staticlink="yes"
+
+# Component data for gcc
+gcc_url=http://people.linaro.org/~ryan.arnold
+gcc_filespec=gcc-linaro-5.3-2016.05.tar.xz
+gcc_makeflags="MAKEINFOFLAGS=--force"
+gcc_configure=
+gcc_staticlink="no"
+gcc_stage1_flags="--with-mpc=${local_builds}/destdir/x86_64-unknown-linux-gnu --with-mpfr=${local_builds}/destdir/x86_64-unknown-linux-gnu --with-gmp=${local_builds}/destdir/x86_64-unknown-linux-gnu --with-gnu-as --with-gnu-ld --disable-libstdcxx-pch --disable-libmudflap --with-cloog=no --with-ppl=no --with-isl=no --disable-nls --enable-c99 --with-tune=cortex-a9 --with-arch=armv7-a --with-fpu=vfpv3-d16 --with-float=softfp --with-mode=thumb --disable-multilib --enable-multiarch --disable-libssp --disable-libquadmath --disable-threads --without-headers --with-newlib --disable-libmudflap --disable-bootstrap --disable-decimal-float --disable-libgomp --disable-libatomic --disable-libsanitizer --disable-plugins --disable-libitm MAKEINFO=echo --enable-languages=c --with-sysroot=${local_builds}/sysroot-arm-linux-gnueabi --disable-shared --with-glibc-version=2.18"
+gcc_stage2_flags="--with-mpc=${local_builds}/destdir/x86_64-unknown-linux-gnu --with-mpfr=${local_builds}/destdir/x86_64-unknown-linux-gnu --with-gmp=${local_builds}/destdir/x86_64-unknown-linux-gnu --with-gnu-as --with-gnu-ld --disable-libstdcxx-pch --disable-libmudflap --with-cloog=no --with-ppl=no --with-isl=no --disable-nls --enable-c99 --with-tune=cortex-a9 --with-arch=armv7-a --with-fpu=vfpv3-d16 --with-float=softfp --with-mode=thumb --disable-multilib --enable-multiarch --with-build-sysroot=${sysroots} --enable-lto --enable-linker-build-id --enable-long-long --enable-shared --with-sysroot=${local_builds}/destdir/x86_64-unknown-linux-gnu/arm-linux-gnueabi/libc --enable-languages=c,c++,fortran,lto --enable-checking=release --disable-bootstrap"
+
+# Component data for glibc
+glibc_url=http://git.linaro.org/git/toolchain
+glibc_branch=linaro/2.21/master
+glibc_revision=a68cafa11c500d8a49a3014c43c5152859d037ae
+glibc_filespec=glibc.git
+glibc_makeflags="PARALLELMFLAGS=-j4"
+glibc_configure="--disable-profile --without-gd --enable-obsolete-rpc --with-headers=${sysroots}/usr/include libc_cv_forced_unwind=yes libc_cv_c_cleanup=yes libc_cv_ctors_header=yes --without-selinux --disable-werror"
+
+# Component data for gdb
+gdb_url=http://git.linaro.org/git/toolchain
+gdb_branch=gdb-7.11-branch
+gdb_revision=114aba2a1babb1f725e8c02f831045acfe86ba6b
+gdb_filespec=binutils-gdb.git
+gdb_configure="--with-gnu-ld --enable-plugins --enable-tui --with-pkgversion=Linaro_GDB-2016.05 --disable-gas --disable-binutils --disable-ld --disable-gold --disable-gprof --with-python=yes"
+gdb_staticlink="yes"
+
+# Component data for gdbserver
+gdbserver_url=http://git.linaro.org/git/toolchain
+gdbserver_branch=gdb-7.11-branch
+gdbserver_revision=114aba2a1babb1f725e8c02f831045acfe86ba6b
+gdbserver_filespec=binutils-gdb.git
+gdbserver_configure="LDFLAGS=-static CFLAGS=--sysroot=${sysroots}"
+gdbserver_staticlink="yes"
+
+
+clibrary=glibc
+target=arm-linux-gnueabi
+
+ ##############################################################################
+ # Everything below this line is only for informational purposes for developers
+ ##############################################################################
+
+# Build machine data
+build: linux
+host: x86_64-unknown-linux-gnu
+kernel: 4.4.0-24-generic
+hostname: docker-trusty-amd64-tcwg
+distribution: trusty
+host_gcc: gcc version 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.3) 
+
+# These aren't used in the repeat build. just a sanity check for developers
+build directory: /home/tcwg-buildslave/workspace/tcwg-make-release/label/docker-trusty-amd64-tcwg/target/arm-linux-gnueabi/_build/builds
+sysroot directory: /home/tcwg-buildslave/workspace/tcwg-make-release/label/docker-trusty-amd64-tcwg/target/arm-linux-gnueabi/_build/sysroots/arm-linux-gnueabi
+snapshots directory: /home/tcwg-buildslave/workspace/tcwg-make-release/label/docker-trusty-amd64-tcwg/target/arm-linux-gnueabi/snapshots
+git reference directory: /home/buildslave/workspace/shared//snapshots
+
+abe_url=https://git-us.linaro.org/toolchain
+abe_branch=branch=
+abe_revision=2be48683f5299fe1bca93b9d2f1816862a4ffbb3
+abe_filespec=abe.git
+abe_configure=""
+
+--------------------- binutils ----------------------
+commit 79ec80f7e6a8b9a1b66aa5f79f5c1bb3fb3807cf
+Author: Ryan S. Arnold <ryan.arnold@linaro.org>
+Date:   Fri Jul 1 17:10:27 2016 -0500
+
+    bfd/version.h: Increment Linaro version to 2016_02 to reflect commits in 2016.01
+
+--------------------- glibc ----------------------
+commit a68cafa11c500d8a49a3014c43c5152859d037ae
+Author: Adhemerval Zanella <adhemerval.zanella@linaro.org>
+Date:   Tue May 17 10:16:39 2016 -0300
+
+    Add runtime check for __ASSUME_REQUEUE_PI (BZ# 18463)
+    
+    This patch adds a runtime check for requeue priority futexes
+    (FUTEX_{WAIT,CMP}_REQUEUE_PI) for configurations that do not define
+    __ASSUME_REQUEUE_PI.
+    
+    It uses the same check uses for priority lock/unlock support, where
+    issuing a futex operation with FUTEX_UNLOCK_PI returns if kernel has
+    or not internal 'futex_cmpxchg_enabled' support (which is also used
+    on requeue priority futexes operations).
+    
+    For architectures that already have __ASSUME_REQUEUE_PI the code
+    flow does not change, 'use_requeue_pi' returns the previous chec
+    logic.  Also, if 'futex_cmpxchg_enabled' is not supported by the
+    kernel, the previous logic will be used (by issuing a default futex
+    operation).
+    
+    Tested on ARM (v3.8 kernel) and x86_64.
+    
+    	* nptl/pthreadP.h (prio_inherit_missing): Change name to
+    	__prio_inherit_missing.
+    	(USE_REQUEUE_PI): Remove define.
+    	(use_requeue_pi): New function.
+    	* nptl/pthread_cond_broadcast.c [__ASSUME_REQUEUE_PI]
+    	(__pthread_cond_broadcast): Remove ifdef.
+    	(USE_REQUEUE_PI): Change to use_requeue_pi.
+    	* nptl/pthread_cond_signal.c [__ASSUME_REQUEUE_PI]
+    	(__pthread_cond_signal): Remove ifdef.
+    	(USE_REQUEUE_PI): Change to use_requeue_pi.
+    	* nptl/pthread_cond_timedwait.c [__ASSUME_REQUEUE_PI]
+    	(__pthread_cond_timedwait): Remove ifdef.
+    	(USE_REQUEUE_PI): Change to use_requeue_pi.
+    	( nptl/pthread_cond_wait.c [__ASSUME_REQUEUE_PI]
+    	(__pthread_cond_wait): Remove ifdef.
+    	(USE_REQUEUE_PI): Change to use_requeue_pi.
+    	* nptl/pthread_mutex_init.c (prio_inherit_missing): Remove 'static'
+    	qualifier and change name to __prio_inherit_missing.
+
+--------------------- abe ----------------------
+commit 2be48683f5299fe1bca93b9d2f1816862a4ffbb3
+Author: Rob Savoye <rob.savoye@linaro.org>
+Date:   Thu Jun 30 13:32:23 2016 -0600
+
+    Dump stdout into a log file, and copy it to the fileserver.
+    
+    This will reduce stdout traffic to the Jenkins console which should improve
+    release build time performance.
+    
+    Change-Id: I861f21b8064350ff9b17257c39b3ce0612c185b9
+
